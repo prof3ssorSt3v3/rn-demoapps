@@ -2385,6 +2385,11 @@ expo-asset@~8.4.3:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
+expo-cellular@~4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/expo-cellular/-/expo-cellular-4.0.0.tgz#ef450ab8e8fcd8a0935eb7515668ba99b59271c1"
+  integrity sha512-pMmBC/QvkpKHwTF7nmwh514SA2rtmADNWsy1l5ygFOIhWqLut43gA2Qtsz6ZqCXukqde4PferMpUeuoHo7HFXQ==
+
 expo-constants@~12.1.3:
   version "12.1.3"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-12.1.3.tgz#bec48a42a7760b010450961c209bb4b1158b9cd6"
@@ -2441,6 +2446,13 @@ expo-modules-core@~0.4.4, expo-modules-core@~0.4.8:
   dependencies:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
+
+expo-network@~4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/expo-network/-/expo-network-4.0.3.tgz#21d7317b004ae8d1b16b56fd60bc3eca377198e3"
+  integrity sha512-9MBxNcaN2O2YinJa1UMNIoCaQkDA74roMLF1Gv/VsfysCd36qHTDH0m3mNUb2NNWAd+5b8O91Q6PLRGz1AJtog==
+  dependencies:
+    expo-modules-core "~0.4.4"
 
 expo-status-bar@~1.1.0:
   version "1.1.0"
