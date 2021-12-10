@@ -3,7 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import {
   TapGestureHandler,
   PanGestureHandler,
-  PanGestureHandlerGestureEvent,
+  LongPressGestureHandler,
+  RotationGestureHandler,
+  PinchGestureHandler,
+  FlingGestureHandler,
 } from 'react-native-gesture-handler';
 //version 1.10 of react-native-gesture-handler
 import Animated, {
@@ -82,6 +85,7 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.text}>Tap Gesture Handler</Text>
       <TapGestureHandler onGestureEvent={tapEvent}>
+        {/* GestureHandlers cannot be nested inside each other currently */}
         <Animated.View style={[styles.square, dynamicBG]} />
       </TapGestureHandler>
 
