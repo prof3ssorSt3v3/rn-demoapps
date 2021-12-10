@@ -11,12 +11,19 @@
       "backgroundColor": "#ffffff"
     },
     "plugins": [
-      {
-        "expo-image-picker": [
-          { "photosPermission": "Please iOS let me access the camera roll." },
-          { "cameraPermission": "Please iOS let me access the camera." }
-        ]
-      }
+      [
+        "expo-camera",
+        {
+          "locationWhenInUsePermission": "Allow my app to access your location via camera"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Please iOS let me access the camera roll.",
+          "cameraPermission": "Please iOS let me access the camera."
+        }
+      ]
     ],
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -26,9 +33,10 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSMicrophoneUsageDescription": "Want to access your microphone because...",
-        "NSPhotoLibraryUsageDescription": "Want to access your photo library because...",
-        "NSCameraUsageDescription": "Want to use your camera because..."
-      }
+        "NSPhotoLibraryUsageDescription": "Please iOS let me access the camera roll.",
+        "NSCameraUsageDescription": "Please iOS let me access the camera."
+      },
+      "bundleIdentifier": "com.prof3ssorst3v3.demoapps"
     },
     "android": {
       "adaptiveIcon": {
@@ -39,8 +47,13 @@
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
         "INTERNET",
-        "CAMERA"
-      ]
+        "CAMERA",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ],
+      "package": "com.prof3ssorst3v3.demoapps"
     },
     "web": {
       "favicon": "./assets/favicon.png"
