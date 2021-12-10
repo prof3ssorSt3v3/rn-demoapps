@@ -10,12 +10,25 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": [
+      {
+        "expo-image-picker": [
+          { "photosPermission": "Please iOS let me access the camera roll." },
+          { "cameraPermission": "Please iOS let me access the camera." }
+        ]
+      }
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Want to access your microphone because...",
+        "NSPhotoLibraryUsageDescription": "Want to access your photo library because...",
+        "NSCameraUsageDescription": "Want to use your camera because..."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -25,7 +38,8 @@
       "permissions": [
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
-        "INTERNET"
+        "INTERNET",
+        "CAMERA"
       ]
     },
     "web": {

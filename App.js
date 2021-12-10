@@ -16,6 +16,7 @@ export default function App() {
         );
       if (status !== 'granted') {
         alert("Fine. Then you can't use my app.");
+        return;
       }
       //Now check if the app has an image from a previous running
       const appImageLocation =
@@ -77,6 +78,18 @@ export default function App() {
     if (!result.cancelled) {
       //setImage is our state variable to save the image source
       setImage(result.uri);
+
+      //copy to permanent location if we want...
+      const appImageLocation =
+        FileSystem.documentDirectory + 'images/image1.jpg';
+      console.log(result.uri, appImageLocation);
+
+      //using the same name each time so we only save ONE image
+      FileSystem.copyAsync({ from: result.uri, to: appImageLocation })
+        .then(() => {
+          console.log('copied the image');
+        })
+        .catch(console.log);
     }
   };
 
