@@ -1,63 +1,97 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import {
-  GestureDetector,
-  Gesture,
-  GestureHandlerRootView,
+  TapGestureHandler,
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
+//version 1.10 of react-native-gesture-handler
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
+  useAnimatedScrollHandler,
+  useAnimatedGestureHandler,
+  useDerivedValue,
+  withTiming,
   withSpring,
+  Easing,
 } from 'react-native-reanimated';
+//version 2.3 of react-native-reanimated
+
+//for the square and circle
+const SIZE = 100.0;
+const CIRCLE_RADIUS = SIZE * 2;
 
 export default function App() {
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Ball />
-    </GestureHandlerRootView>
-  );
-}
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
+  const bgColor = useSharedValue('lime');
 
-function Ball() {
-  const isPressed = useSharedValue(false);
-  const offset = useSharedValue({ x: 0, y: 0 });
-  const animatedStyles = useAnimatedStyle(() => {
+  const panEvent = useAnimatedGestureHandler({
+    onStart: (ev, context) => {
+      context.translateX = translateX.value;
+      context.translateY = translateY.value;
+    },
+    onActive: (ev, context) => {
+      translateX.value = ev.translationX + context.translateX;
+      translateY.value = ev.translationY + context.translateY;
+    },
+    onEnd: (ev, context) => {
+      const distance = Math.sqrt(translateX.value ** 2 + translateY.value ** 2);
+
+      if (distance < CIRCLE_RADIUS + SIZE / 2) {
+        translateX.value = withSpring(0);
+        translateY.value = withSpring(0);
+      }
+    },
+  });
+
+  const tapEvent = useAnimatedGestureHandler({
+    onStart: (ev, context) => {
+      console.log('you started tapping');
+    },
+    onEnd: (ev, context) => {
+      //tap does not have an onActive property
+      //toggle colour version
+      // bgColor.value = bgColor.value === 'lime' ? 'hotpink' : 'lime';
+      //random colour version
+      bgColor.value = '#' + Math.random().toString(16).substr(2, 6);
+    },
+  });
+
+  const dynamicBG = useAnimatedStyle(() => {
     return {
-      transform: [
-        { translateX: offset.value.x },
-        { translateY: offset.value.y },
-        { scale: withSpring(isPressed.value ? 1.2 : 1) },
-      ],
-      backgroundColor: isPressed.value ? 'yellow' : 'blue',
+      backgroundColor: bgColor.value,
     };
   });
-  const start = useSharedValue({ x: 0, y: 0 });
-  const gesture = Gesture.Pan()
-    .onBegin(() => {
-      'worklet';
-      isPressed.value = true;
-    })
-    .onUpdate((e) => {
-      'worklet';
-      offset.value = {
-        x: e.translationX + start.value.x,
-        y: e.translationY + start.value.y,
-      };
-    })
-    .onEnd(() => {
-      'worklet';
-      start.value = {
-        x: offset.value.x,
-        y: offset.value.y,
-      };
-      isPressed.value = false;
-    });
+
+  const dynamicTranslate = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: translateX.value,
+        },
+        {
+          translateY: translateY.value,
+        },
+      ],
+    };
+  });
 
   return (
-    <GestureDetector style={{ flex: 1 }} gesture={gesture}>
-      <Animated.View style={[styles.ball, animatedStyles]} />
-    </GestureDetector>
+    <View style={styles.container}>
+      <Text style={styles.text}>Tap Gesture Handler</Text>
+      <TapGestureHandler onGestureEvent={tapEvent}>
+        <Animated.View style={[styles.square, dynamicBG]} />
+      </TapGestureHandler>
+
+      <Text style={styles.text}>Pan Gesture Handler</Text>
+      <View style={styles.circle}>
+        <PanGestureHandler onGestureEvent={panEvent}>
+          <Animated.View style={[styles.square, dynamicTranslate]} />
+        </PanGestureHandler>
+      </View>
+    </View>
   );
 }
 
@@ -68,11 +102,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  ball: {
-    width: 100,
-    height: 100,
-    borderRadius: 100,
-    backgroundColor: 'blue',
-    alignSelf: 'center',
+  text: {
+    fontSize: 24,
+    marginBottom: 10,
+    marginTop: 20,
+  },
+  square: {
+    width: SIZE,
+    height: SIZE,
+    backgroundColor: '#ddd',
+    borderRadius: 20,
+  },
+  circle: {
+    width: CIRCLE_RADIUS * 2,
+    height: CIRCLE_RADIUS * 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: CIRCLE_RADIUS,
+    borderWidth: 5,
+    borderColor: 'rgba(0, 0, 255, 0.5)',
   },
 });
