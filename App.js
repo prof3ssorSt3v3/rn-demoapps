@@ -17,10 +17,10 @@ export default function App() {
   };
 
   const addItemToStorage = (newValue) => {
-    //add the newValue to the array and overwrite it in AsyncStorage
-    setItem((currentArr) => [newValue, ...currentArr]);
     //item in variable is an array
-    setValue(JSON.stringify([newValue, ...value]))
+    setValue((currentArr) => [newValue, ...currentArr]);
+    //add the newValue to the array and overwrite it in AsyncStorage
+    setItem(JSON.stringify([newValue, ...value]))
       .then(() => {
         console.log('saved new value in array');
       })
